@@ -28,6 +28,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("source", help="URL or local file to scrape")
     parser.add_argument(
         "--site",
+        choices=sorted(PARSERS),
         default="sample",
         help="Key of the site configuration to use (default: sample)",
     )

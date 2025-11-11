@@ -36,6 +36,10 @@ Scrape a public profile that matches one of the configured site parsers:
 python -m scraper.cli "https://example.com/profile/jane" --site sample
 ```
 
+The `--site` flag chooses which site parser to load. The default is `sample`, matching
+the configuration bundled in `scraper/sites/sample.py`. When you add other site modules
+you can pass their keys to target those platforms.
+
 To scrape a local HTML file, use the `--from-file` flag. The bundled `sample` site
 configuration matches `tests/sample_profile.html`.
 
