@@ -12,16 +12,23 @@ public profile pages.
 
 ## Installation
 
-Create a virtual environment (optional) and install the dependencies (none are strictly
-required for the core scraper, but this keeps the environment isolated):
+Create a virtual environment (optional) and install the project in editable mode so the
+`scraper` package and CLI are available no matter which directory you run the commands
+from. On Unix-like shells (macOS, Linux, WSL, Git Bash) activate the environment with
+`source`. On Windows `cmd`/PowerShell use the scripts under `.venv\Scripts` instead:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
-# No external dependencies are required
+source .venv/bin/activate  # PowerShell: .venv\Scripts\Activate.ps1, cmd.exe: .venv\Scripts\activate.bat
+python -m pip install --upgrade pip
+python -m pip install -e .
 ```
 
 ## Usage
+
+After installation you can run the console script `spyex-scrape` from anywhere, or
+invoke the module directly with `python -m scraper.cli` if you prefer to stay inside the
+project tree.
 
 Scrape a public profile that matches one of the configured site parsers:
 
