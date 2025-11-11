@@ -40,6 +40,11 @@ The `--site` flag chooses which site parser to load. The default is `sample`, ma
 the configuration bundled in `scraper/sites/sample.py`. When you add other site modules
 you can pass their keys to target those platforms.
 
+> **Note**
+> The bundled `sample` parser only understands the structure in
+> `tests/sample_profile.html`. Scraping a live site without a matching parser will return
+> a descriptive error explaining that you need to supply selectors under `scraper/sites/`.
+
 To scrape a local HTML file, use the `--from-file` flag. The bundled `sample` site
 configuration matches `tests/sample_profile.html`.
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scraper import cli
 from scraper.core import PublicProfileScraper, SelectorProfileParser
 from scraper.recorders import CSVRecorder, JSONLinesRecorder
 
@@ -58,3 +59,14 @@ def test_recorders_write_expected_format(tmp_path):
     csv_lines = csv_path.read_text(encoding="utf8").splitlines()
     assert csv_lines[0].startswith("source_url")
     assert any("Jane Doe" in line for line in csv_lines[1:])
+
+
+def test_cli_reports_parse_error(tmp_path, capsys):
+    malformed = tmp_path / "broken.html"
+    malformed.write_text("<html></html>", encoding="utf8")
+
+    exit_code = cli.main([str(malformed), "--from-file"])
+
+    assert exit_code == 1
+    captured = capsys.readouterr()
+    assert "parser expects html" in captured.err.lower()

@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Dict
 
-from .core import PublicProfileScraper, SelectorProfileParser
+from .core import ParseError, PublicProfileScraper, SelectorProfileParser
 from .recorders import CSVRecorder, JSONLinesRecorder, record_many
 from .sites import sample as sample_site
 
@@ -56,11 +57,22 @@ def main(argv: list[str] | None = None) -> int:
     parser = _load_parser(args.site)
 
     scraper = PublicProfileScraper()
-    if args.from_file:
-        html = Path(args.source).read_text(encoding="utf8")
-        metrics = scraper.scrape_from_html(html, url=str(Path(args.source).resolve()), parser=parser)
-    else:
-        metrics = scraper.scrape(args.source, parser)
+    try:
+        if args.from_file:
+            html = Path(args.source).read_text(encoding="utf8")
+            metrics = scraper.scrape_from_html(
+                html, url=str(Path(args.source).resolve()), parser=parser
+            )
+        else:
+            metrics = scraper.scrape(args.source, parser)
+    except ParseError as exc:
+        print(
+            "{} The '{}' parser expects HTML shaped like the bundled sample "
+            "fixture; choose a site that matches your target or implement a "
+            "custom parser under scraper/sites/.".format(exc, args.site),
+            file=sys.stderr,
+        )
+        return 1
 
     if args.output:
         if args.output.suffix.lower() in {".jsonl", ".ndjson"}:
